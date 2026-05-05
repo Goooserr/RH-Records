@@ -7,9 +7,9 @@ import { Play, Calendar, Music, Sparkles } from 'lucide-react';
 import SoundWaveAnim from '@/components/ui/SoundWaveAnim';
 import dynamic from 'next/dynamic';
 
-const Vinyl3D = dynamic(() => import('@/components/ui/Vinyl3D'), { 
+const SonicWaveformCanvas = dynamic(() => import('@/components/ui/sonic-waveform').then(mod => mod.SonicWaveformCanvas), { 
   ssr: false,
-  loading: () => <div className="w-full h-full bg-transparent" /> 
+  loading: () => <div className="absolute inset-0 bg-rh-black" /> 
 });
 
 import LiquidButton from '@/components/ui/LiquidButton';
@@ -113,17 +113,11 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Immersive Background Vinyl (Behind Title) */}
-          <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-40 lg:opacity-60">
-            <motion.div 
-              className="w-full h-full scale-75 lg:scale-90"
-              style={{ 
-                rotateX: useTransform(scrollYProgress, [0, 1], [0, 15]),
-                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -100]), { stiffness: 50, damping: 20 })
-              }}
-            >
-              <Vinyl3D />
-            </motion.div>
+          {/* Immersive Background Sonic Waveform (Behind Title) */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <SonicWaveformCanvas />
+            {/* Overlay Gradient for depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-rh-black/40 via-transparent to-rh-black z-[1]" />
           </div>
 
           {/* Main Title Group */}
