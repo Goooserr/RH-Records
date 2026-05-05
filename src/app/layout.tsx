@@ -38,8 +38,6 @@ export const metadata: Metadata = {
 import CyberGrid from '@/components/ui/CyberGrid';
 import { LazyMotion, domMax } from 'framer-motion';
 
-const loadFeatures = () => import('@/lib/framer-features').then(res => res.default);
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className="scroll-smooth">
