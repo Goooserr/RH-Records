@@ -36,18 +36,18 @@ export const metadata: Metadata = {
 };
 
 import CyberGrid from '@/components/ui/CyberGrid';
-import { LazyMotion, domMax } from 'framer-motion';
+import FramerProvider from '@/components/providers/FramerProvider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className="scroll-smooth">
       <body className="bg-rh-black text-rh-white font-inter antialiased">
-        <LazyMotion features={domMax} strict>
+        <FramerProvider>
           <CyberGrid />
           <Navbar />
           <main className="relative z-10">{children}</main>
           <Footer />
-        </LazyMotion>
+        </FramerProvider>
       </body>
     </html>
   );
