@@ -70,12 +70,10 @@ export default function InstagramFeed() {
           </motion.a>
         </motion.div>
 
-        {/* Grid posts */}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"
           variants={stagger}
           initial="hidden"
-          whileInView="viewable"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
         >
