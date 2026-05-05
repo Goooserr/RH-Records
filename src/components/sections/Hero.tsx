@@ -114,12 +114,12 @@ export default function Hero() {
           </motion.div>
 
           {/* Immersive Background Vinyl (Behind Title) */}
-          <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-60 lg:opacity-80">
+          <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-40 lg:opacity-60">
             <motion.div 
-              className="w-full h-full scale-125 lg:scale-150"
+              className="w-full h-full scale-75 lg:scale-90"
               style={{ 
-                rotateX: useTransform(scrollYProgress, [0, 1], [0, 20]),
-                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -200]), { stiffness: 50, damping: 20 })
+                rotateX: useTransform(scrollYProgress, [0, 1], [0, 15]),
+                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -100]), { stiffness: 50, damping: 20 })
               }}
             >
               <Vinyl3D />
@@ -127,40 +127,40 @@ export default function Hero() {
           </div>
 
           {/* Main Title Group */}
-          <div className="relative w-full flex flex-col items-center mb-24 z-10">
+          <div className="relative w-full flex flex-col items-center mb-16 z-10">
             <motion.div 
               className="relative select-none flex flex-col items-center"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center text-center">
                 <div className="relative flex flex-col items-center">
                   {/* Decorative tag */}
                   <motion.span 
-                    className="mb-8 px-4 py-1.5 rounded-full border border-rh-purple/30 bg-rh-purple/10 text-[11px] font-mono text-rh-purple tracking-[0.4em] uppercase backdrop-blur-md"
+                    className="mb-6 px-3 py-1 rounded-full border border-rh-purple/20 bg-rh-purple/5 text-[10px] font-mono text-rh-purple tracking-[0.3em] uppercase backdrop-blur-sm"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5, duration: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
                   >
                     High-End Production
                   </motion.span>
 
-                  {/* The Primary Title - More Solid & Premium */}
+                  {/* The Primary Title - Reduced Size & Restored Gradient */}
                   <h1 
-                    className="font-syne font-black text-center leading-[0.9] tracking-[-0.04em] uppercase flex flex-col items-center text-rh-white"
-                    style={{ fontSize: 'clamp(3.5rem, 15vw, 10rem)' }}
+                    className="font-syne font-black text-center leading-none tracking-tight uppercase flex flex-col items-center"
+                    style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)' }}
                   >
                     <div className="relative">
-                      <span className="inline-block mix-blend-difference drop-shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                      <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x drop-shadow-[0_0_20px_rgba(168,85,247,0.2)]">
                         RH RECORDS
                       </span>
                       
                       {/* Gradient Accent Line */}
                       <motion.div 
-                        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-neon"
+                        className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-[2px] bg-gradient-neon"
                         initial={{ width: 0 }}
-                        animate={{ width: 128 }}
+                        animate={{ width: 96 }}
                         transition={{ delay: 1, duration: 1.5 }}
                       />
                     </div>
