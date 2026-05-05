@@ -72,20 +72,6 @@ export default function Hero() {
       className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden"
       aria-label="Accueil RH Records"
     >
-      {/* 3D Spatial Element */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <motion.div 
-          className="absolute top-1/2 -right-20 lg:right-[5%] -translate-y-1/2 w-full max-w-[500px] opacity-40 lg:opacity-60"
-          style={{ 
-            y: useTransform(scrollYProgress, [0, 1], [0, -150]),
-            rotate: useTransform(scrollYProgress, [0, 1], [0, 25]),
-            x: useSpring(useTransform(mouseX, [-500, 500], [30, -30]), { stiffness: 50, damping: 20 })
-          }}
-        >
-          <Vinyl3D />
-        </motion.div>
-      </div>
-
       {/* Spotlight Effect */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none opacity-40"
@@ -126,54 +112,63 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Title - Futuristic Premium */}
-          <motion.div 
-            className="relative mb-12 select-none group"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="flex flex-col items-center">
-              <div className="relative flex flex-col items-center">
-                {/* Background Shadow Text for Depth */}
-                <span className="absolute -top-4 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse">
-                  System.Initialized
-                </span>
-
-                {/* The Primary Title */}
-                <h1 
-                  className="font-syne font-light text-center leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center"
-                  style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)' }}
-                >
-                  <span className="relative text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/30 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                    <TextScramble text="RH" />
+          {/* Main Title + 3D Object Side-by-Side */}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-0 lg:gap-12 mb-12 w-full">
+            <motion.div 
+              className="relative select-none group"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="flex flex-col items-center lg:items-start">
+                <div className="relative flex flex-col items-center lg:items-start">
+                  {/* Background Shadow Text for Depth */}
+                  <span className="absolute -top-4 left-1/2 lg:left-0 -translate-x-1/2 lg:translate-x-0 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse">
+                    System.Initialized
                   </span>
-                  
-                  <div className="relative mt-2">
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x font-bold tracking-[0.1em]">
-                      <TextScramble text="RECORDS" />
+
+                  {/* The Primary Title */}
+                  <h1 
+                    className="font-syne font-light text-center lg:text-left leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center lg:items-start"
+                    style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)' }}
+                  >
+                    <span className="relative text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/30 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                      <TextScramble text="RH" />
                     </span>
                     
-                    {/* Futuristic Underline Decoration */}
-                    <motion.div 
-                      className="absolute -bottom-4 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-rh-purple/50 to-transparent"
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 1.5, duration: 2 }}
-                    />
-                    <motion.div 
-                      className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-rh-cyan blur-[2px]"
-                      animate={{ opacity: [0, 1, 0] }}
-                      transition={{ repeat: Infinity, duration: 2 }}
-                    />
-                  </div>
-                </h1>
+                    <div className="relative mt-2">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x font-bold tracking-[0.1em]">
+                        <TextScramble text="RECORDS" />
+                      </span>
+                      
+                      {/* Futuristic Underline Decoration */}
+                      <motion.div 
+                        className="absolute -bottom-4 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-rh-purple/50 to-transparent"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ delay: 1.5, duration: 2 }}
+                      />
+                    </div>
+                  </h1>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Dynamic Background Glow - Refined */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-radial-gradient from-rh-purple/10 to-transparent blur-[120px] -z-10 pointer-events-none" />
-          </motion.div>
+            {/* 3D Object next to title on Desktop */}
+            <motion.div 
+              className="w-full max-w-[300px] lg:max-w-[450px] opacity-60 lg:opacity-100"
+              style={{ 
+                y: useTransform(scrollYProgress, [0, 1], [0, -50]),
+                rotate: useTransform(scrollYProgress, [0, 1], [0, 15]),
+                x: useSpring(useTransform(mouseX, [-500, 500], [20, -20]), { stiffness: 50, damping: 20 })
+              }}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.5 }}
+            >
+              <Vinyl3D />
+            </motion.div>
+          </div>
 
           {/* Subtitle with reveal */}
           <motion.p
