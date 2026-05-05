@@ -10,19 +10,40 @@ const fadeUp = {
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.07 } } };
 
-// Placeholders — remplacer par les vraies photos Instagram via API ou embed
-const posts = Array.from({ length: 6 }, (_, i) => ({
-  id:      String(i + 1),
-  caption: `Post Instagram #${i + 1} — @dj.r_h`,
-  gradient: [
-    'from-rh-purple/30 to-rh-cyan/20',
-    'from-rh-pink/30 to-rh-purple/20',
-    'from-rh-cyan/30 to-rh-violet/20',
-    'from-rh-gold/20 to-rh-pink/20',
-    'from-rh-violet/30 to-rh-cyan/20',
-    'from-rh-purple/20 to-rh-pink/30',
-  ][i],
-}));
+import Image from 'next/image';
+
+const posts = [
+  {
+    id: '1',
+    url: 'https://www.instagram.com/p/DX7Oxf9IrPY/',
+    image: '/images/instagram/post1.png',
+    caption: 'Studio session vibes at RH Records',
+  },
+  {
+    id: '2',
+    url: 'https://www.instagram.com/p/DWb-4HXDEE-/',
+    image: '/images/instagram/post2.png',
+    caption: 'Mixing the new track',
+  },
+  {
+    id: '3',
+    url: 'https://www.instagram.com/p/DShyb38iLV7/',
+    image: '/images/instagram/post3.png',
+    caption: 'Late night recordings',
+  },
+  {
+    id: '4',
+    url: 'https://www.instagram.com/p/DPtyWFlCHkZ/',
+    image: '/images/instagram/post4.png',
+    caption: 'Analog gear showcase',
+  },
+  {
+    id: '5',
+    url: 'https://www.instagram.com/p/DJJIEQ4N27p/',
+    image: '/images/instagram/post5.png',
+    caption: 'Vinyl collection at the studio',
+  },
+];
 
 export default function InstagramFeed() {
   return (
@@ -72,7 +93,7 @@ export default function InstagramFeed() {
 
         {/* Grid posts */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4"
           variants={stagger}
           initial="hidden"
           whileInView="visible"
@@ -82,34 +103,34 @@ export default function InstagramFeed() {
             <motion.a
               key={post.id}
               variants={fadeUp}
-              href="https://instagram.com/dj.r_h"
+              href={post.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative aspect-square rounded-2xl overflow-hidden border border-rh-border cursor-pointer"
+              className="group relative aspect-square rounded-2xl overflow-hidden border border-rh-border cursor-pointer bg-rh-surface"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
               aria-label={post.caption}
             >
-              {/* Gradient placeholder */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${post.gradient}`} />
-
-              {/* Icon centré */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Instagram size={28} className="text-white/30" />
-              </div>
+              <Image 
+                src={post.image}
+                alt={post.caption}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
 
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-rh-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                <ExternalLink size={22} className="text-white" />
+                <div className="flex flex-col items-center gap-2">
+                  <Instagram size={22} className="text-white" />
+                  <span className="text-[10px] text-white uppercase font-bold tracking-widest">Voir le post</span>
+                </div>
               </div>
             </motion.a>
           ))}
         </motion.div>
-
-        <p className="text-center text-rh-grey text-xs mt-6 font-mono">
-          * Intégration Instagram API disponible — remplacer les placeholders par les vraies photos
-        </p>
       </div>
     </section>
+  );
+}
   );
 }
