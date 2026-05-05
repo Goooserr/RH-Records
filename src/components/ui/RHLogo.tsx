@@ -13,11 +13,11 @@ interface RHLogoProps {
   className?: string;
 }
 
-/* Fallback SVG si le fichier PNG est absent
-   Toutes les valeurs sont en unités SVG (viewBox 100×100) — indépendantes du size px */
-function LogoFallback({ size }: { size: number }) {
+/* Premium Neon SVG Logo
+   Toutes les valeurs sont en unités SVG (viewBox 100×100) */
+function LogoFallback({ size, glow }: { size: number, glow?: boolean }) {
   return (
-    <svg
+    <motion.svg
       width={size}
       height={size}
       viewBox="0 0 100 100"
@@ -25,48 +25,42 @@ function LogoFallback({ size }: { size: number }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       style={{ overflow: 'visible' }}
+      animate={glow ? {
+        filter: [
+          'drop-shadow(0 0 2px rgba(168,85,247,0.4))',
+          'drop-shadow(0 0 8px rgba(168,85,247,0.8))',
+          'drop-shadow(0 0 2px rgba(168,85,247,0.4))',
+        ]
+      } : {}}
+      transition={{ duration: 2, repeat: Infinity }}
     >
-      {/* Cercles vinyle */}
-      <circle cx="50" cy="50" r="46" stroke="url(#rh-grd)" strokeWidth="2" />
-      <circle cx="50" cy="50" r="34" stroke="url(#rh-grd)" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
-      <circle cx="50" cy="50" r="6"  fill="url(#rh-grd)" />
-
-      {/* Texte "DJ·Rh" — taille fixe SVG = 18 unités */}
-      <text
-        x="50"
-        y="47"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontFamily="Syne, Arial, sans-serif"
-        fontWeight="800"
-        fontSize="18"
-        fill="url(#rh-grd)"
-      >
-        DJ·Rh
-      </text>
-
-      {/* Texte "RH Records" — taille fixe SVG = 9 unités */}
-      <text
-        x="50"
-        y="63"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontFamily="Inter, Arial, sans-serif"
-        fontWeight="600"
-        fontSize="9"
-        fill="#9CA3AF"
-        letterSpacing="0.5"
-      >
-        RH Records
-      </text>
-
       <defs>
-        <linearGradient id="rh-grd" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stopColor="#A855F7" />
+        <linearGradient id="rh-neon-grd" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#A855F7" />
           <stop offset="100%" stopColor="#06B6D4" />
         </linearGradient>
       </defs>
-    </svg>
+
+      {/* Stylized 'RH' path */}
+      <motion.path
+        d="M25 75V25M25 50H55M55 25V75M55 50L75 75"
+        stroke="url(#rh-neon-grd)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+      />
+
+      {/* Circle details */}
+      <motion.circle 
+        cx="50" cy="50" r="45" 
+        stroke="white" strokeWidth="0.5" strokeDasharray="2 4" opacity="0.3" 
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      />
+    </motion.svg>
   );
 }
 
@@ -103,7 +97,7 @@ export default function RHLogo({
         transition={animated ? { duration: 12, repeat: Infinity, ease: 'linear' } : undefined}
       >
         {imgError ? (
-          <LogoFallback size={size} />
+          <LogoFallback size={size} glow={glow} />
         ) : (
           <Image
             src="/images/logo-rh-records.png"

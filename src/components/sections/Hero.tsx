@@ -13,6 +13,9 @@ const Vinyl3D = dynamic(() => import('@/components/ui/Vinyl3D'), {
   loading: () => <div className="w-full h-[500px] bg-transparent" /> 
 });
 
+const AnimatedLogo = dynamic(() => import('@/components/ui/AnimatedLogo'), { ssr: false });
+import LiquidButton from '@/components/ui/LiquidButton';
+
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -112,33 +115,35 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Title + 3D Object Side-by-Side */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-0 lg:gap-12 mb-12 w-full">
+          {/* Main Title + 3D Object */}
+          <div className="relative w-full flex flex-col items-center mb-12">
+            {/* The Primary Title - Centered */}
             <motion.div 
-              className="relative select-none group"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="relative select-none group z-20 flex flex-col items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="flex flex-col items-center lg:items-start">
-                <div className="relative flex flex-col items-center lg:items-start">
+              <div className="flex flex-col items-center">
+                <div className="relative flex flex-col items-center">
                   {/* Background Shadow Text for Depth */}
-                  <span className="absolute -top-4 left-1/2 lg:left-0 -translate-x-1/2 lg:translate-x-0 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse">
+                  <span className="absolute -top-12 left-1/2 -translate-x-1/2 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse whitespace-nowrap">
                     System.Initialized
                   </span>
 
+                  {/* Animated Logo (Neon Effect) */}
+                  <div className="mb-4">
+                    <AnimatedLogo />
+                  </div>
+
                   {/* The Primary Title */}
                   <h1 
-                    className="font-syne font-light text-center lg:text-left leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center lg:items-start"
+                    className="font-syne font-light text-center leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center"
                     style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)' }}
                   >
-                    <span className="relative text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/30 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                      <TextScramble text="RH" />
-                    </span>
-                    
                     <div className="relative mt-2">
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x font-bold tracking-[0.1em]">
-                        <TextScramble text="RECORDS" />
+                        <TextScramble text="RH RECORDS" />
                       </span>
                       
                       {/* Futuristic Underline Decoration */}
@@ -154,19 +159,21 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* 3D Object next to title on Desktop */}
+            {/* 3D Object - Smaller and on the side on Desktop, below on mobile */}
             <motion.div 
-              className="w-full max-w-[300px] lg:max-w-[450px] opacity-60 lg:opacity-100"
+              className="lg:absolute lg:-right-4 lg:top-1/2 lg:-translate-y-1/2 w-full max-w-[250px] lg:max-w-[320px] opacity-40 lg:opacity-80 mix-blend-screen pointer-events-none lg:pointer-events-auto"
               style={{ 
-                y: useTransform(scrollYProgress, [0, 1], [0, -50]),
-                rotate: useTransform(scrollYProgress, [0, 1], [0, 15]),
-                x: useSpring(useTransform(mouseX, [-500, 500], [20, -20]), { stiffness: 50, damping: 20 })
+                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -100]), { stiffness: 50, damping: 20 }),
+                rotate: useTransform(scrollYProgress, [0, 1], [0, 30]),
+                x: useSpring(useTransform(mouseX, [-500, 500], [10, -10]), { stiffness: 50, damping: 20 })
               }}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.2, delay: 0.5 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.8, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.8 }}
             >
-              <Vinyl3D />
+              <div className="w-full aspect-square">
+                <Vinyl3D />
+              </div>
             </motion.div>
           </div>
 
@@ -179,30 +186,23 @@ export default function Hero() {
             Production, Mixage & Mastering de classe mondiale.
           </motion.p>
 
-          {/* CTA Group with improved hover states */}
+          {/* CTA Group with Liquid Buttons */}
           <motion.div
             variants={fadeSlideUp}
             className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-24"
           >
-            <Link
-              href="/booking"
-              className="group relative px-12 py-6 rounded-2xl bg-rh-white text-rh-black font-bold text-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] overflow-hidden"
-            >
-              <span className="relative z-10 flex items-center gap-3">
+            <Link href="/booking">
+              <LiquidButton variant="primary" className="px-12 py-6 text-xl">
                 <Calendar size={22} />
                 Réserver une session
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              </LiquidButton>
             </Link>
 
-            <Link
-              href="/portfolio"
-              className="group px-12 py-6 rounded-2xl border border-white/10 hover:border-rh-purple/50 text-rh-white font-bold text-xl transition-all duration-500 hover:bg-white/5"
-            >
-              <span className="flex items-center gap-3">
-                <Play size={22} fill="currentColor" className="group-hover:scale-110 transition-transform" />
+            <Link href="/portfolio">
+              <LiquidButton variant="secondary" className="px-12 py-6 text-xl">
+                <Play size={22} fill="currentColor" />
                 Découvrir le son
-              </span>
+              </LiquidButton>
             </Link>
           </motion.div>
         </div>

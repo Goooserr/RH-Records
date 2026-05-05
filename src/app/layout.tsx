@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import AuroraBackground from '@/components/ui/AuroraBackground';
 
 export const metadata: Metadata = {
   title: {
@@ -36,11 +35,13 @@ export const metadata: Metadata = {
   viewport: 'width=device-width, initial-scale=1',
 };
 
+import CyberGrid from '@/components/ui/CyberGrid';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className="scroll-smooth">
       <body className="bg-rh-black text-rh-white font-inter antialiased">
-        <AuroraBackground />
+        <CyberGrid />
         <Navbar />
         <main className="relative z-10">{children}</main>
         <Footer />

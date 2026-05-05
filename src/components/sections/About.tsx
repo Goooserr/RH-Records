@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Disc3, Zap, Mic2, Star } from 'lucide-react';
 import GlowCard from '@/components/ui/GlowCard';
+import TextReveal from '@/components/ui/TextReveal';
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 30 },
@@ -49,26 +50,32 @@ export default function About() {
               À propos
             </motion.p>
 
-            <motion.h2
-              id="about-title"
-              variants={fadeUp}
-              className="font-syne font-extrabold leading-tight mb-6"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}
-            >
-              <span className="text-rh-white">L'art du son</span><br />
-              <span className="text-gradient-neon">à Chambéry</span>
-            </motion.h2>
+            <TextReveal>
+              <motion.h2
+                id="about-title"
+                variants={fadeUp}
+                className="font-syne font-extrabold leading-tight mb-6"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}
+              >
+                <span className="text-rh-white">L'art du son</span><br />
+                <span className="text-gradient-neon">à Chambéry</span>
+              </motion.h2>
+            </TextReveal>
 
-            <motion.p variants={fadeUp} className="text-rh-grey leading-relaxed mb-4">
-              DJ R_H est un artiste complet basé à Chambéry, alliant l'énergie des DJ sets à la précision du beatmaking
-              professionnel. Passionné par la musique depuis plus de 10 ans, il développe une identité sonore unique entre
-              trap, afro et UK drill.
-            </motion.p>
+            <TextReveal>
+              <motion.p variants={fadeUp} className="text-rh-grey leading-relaxed mb-4">
+                DJ R_H est un artiste complet basé à Chambéry, alliant l'énergie des DJ sets à la précision du beatmaking
+                professionnel. Passionné par la musique depuis plus de 10 ans, il développe une identité sonore unique entre
+                trap, afro et UK drill.
+              </motion.p>
+            </TextReveal>
 
-            <motion.p variants={fadeUp} className="text-rh-grey leading-relaxed mb-8">
-              Son studio, équipé de matériels haut de gamme, accueille artistes, rappeurs et chanteurs de toute la région
-              Auvergne-Rhône-Alpes pour des sessions d'enregistrement, de mixage et de mastering.
-            </motion.p>
+            <TextReveal>
+              <motion.p variants={fadeUp} className="text-rh-grey leading-relaxed mb-8">
+                Son studio, équipé de matériels haut de gamme, accueille artistes, rappeurs et chanteurs de toute la région
+                Auvergne-Rhône-Alpes pour des sessions d'enregistrement, de mixage et de mastering.
+              </motion.p>
+            </TextReveal>
 
             <motion.a
               variants={fadeUp}
