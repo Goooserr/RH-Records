@@ -37,10 +37,11 @@ export default function Navbar() {
         animate={{ y: 0,   opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={cn(
-          'fixed top-4 left-4 right-4 z-50 rounded-2xl transition-all duration-300',
+          'fixed top-6 left-4 right-4 z-50 rounded-2xl transition-all duration-500',
+          'backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.4)]',
           scrolled
-            ? 'glass-dark glow-purple'
-            : 'bg-transparent'
+            ? 'bg-rh-black/80 border-rh-purple/20'
+            : 'bg-white/[0.02] border-white/10'
         )}
         aria-label="Navigation principale"
       >

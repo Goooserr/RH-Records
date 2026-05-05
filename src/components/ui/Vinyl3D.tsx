@@ -40,7 +40,7 @@ function Vinyl() {
       {/* Main Vinyl Disc - Chrome / Glass Material */}
       <mesh ref={meshRef} receiveShadow castShadow>
         <cylinderGeometry args={[3, 3, 0.05, 128]} />
-        <MeshPhysicalMaterial
+        <meshPhysicalMaterial
           color="#111"
           metalness={0.9}
           roughness={0.1}
