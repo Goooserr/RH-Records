@@ -80,6 +80,8 @@ function Vinyl() {
               chromaticAberration={0.5}
               anisotropy={0.3}
               distortion={0.5}
+              distortionScale={0.1}
+              temporalDistortion={0.1}
               color="#A855F7"
             />
           </mesh>
@@ -97,6 +99,9 @@ function Vinyl() {
           thickness={1}
           ior={1.2}
           chromaticAberration={1}
+          distortion={0}
+          distortionScale={0}
+          temporalDistortion={0}
           color="#06B6D4"
           emissive="#06B6D4"
           emissiveIntensity={0.5}
