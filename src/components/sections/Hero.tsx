@@ -3,8 +3,9 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, Variants, useMotionValue, useSpring } from 'framer-motion';
-import { Play, Calendar, ChevronDown, Music, Sparkles } from 'lucide-react';
+import { Play, Calendar, Music, Sparkles } from 'lucide-react';
 import SoundWaveAnim from '@/components/ui/SoundWaveAnim';
+import TextScramble from '@/components/ui/TextScramble';
 
 const containerVariants: Variants = {
   hidden: {},
@@ -105,52 +106,53 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Title - Extreme Impact */}
+          {/* Main Title - Futuristic Premium */}
           <motion.div 
-            className="relative mb-12 select-none"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              visible: { transition: { staggerChildren: 0.05 } }
-            }}
+            className="relative mb-12 select-none group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1
-              className="font-syne font-extrabold text-center leading-[0.8] tracking-[-0.05em] uppercase"
-              style={{ fontSize: 'clamp(3.5rem, 15vw, 10rem)' }}
-            >
-              <div className="overflow-hidden mb-2">
-                <motion.span 
-                  className="text-rh-white block"
-                  variants={{
-                    hidden: { y: "100%" },
-                    visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-                  }}
+            <div className="flex flex-col items-center">
+              <div className="relative flex flex-col items-center">
+                {/* Background Shadow Text for Depth */}
+                <span className="absolute -top-4 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse">
+                  System.Initialized
+                </span>
+
+                {/* The Primary Title */}
+                <h1 
+                  className="font-syne font-light text-center leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center"
+                  style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)' }}
                 >
-                  RH
-                </motion.span>
+                  <span className="relative text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/30 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    <TextScramble text="RH" />
+                  </span>
+                  
+                  <div className="relative mt-2">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x font-bold tracking-[0.1em]">
+                      <TextScramble text="RECORDS" />
+                    </span>
+                    
+                    {/* Futuristic Underline Decoration */}
+                    <motion.div 
+                      className="absolute -bottom-4 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-rh-purple/50 to-transparent"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ delay: 1.5, duration: 2 }}
+                    />
+                    <motion.div 
+                      className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-rh-cyan blur-[2px]"
+                      animate={{ opacity: [0, 1, 0] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                    />
+                  </div>
+                </h1>
               </div>
-              <div className="overflow-hidden">
-                <motion.span 
-                  className="text-gradient-neon block pb-4"
-                  variants={{
-                    hidden: { y: "100%" },
-                    visible: { y: 0, transition: { duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                >
-                  RECORDS
-                </motion.span>
-              </div>
-            </h1>
-            
-            {/* Dynamic Background Glow */}
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.4, 0.2]
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-rh-purple/20 blur-[150px] -z-10 rounded-full"
-            />
+            </div>
+
+            {/* Dynamic Background Glow - Refined */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-radial-gradient from-rh-purple/10 to-transparent blur-[120px] -z-10 pointer-events-none" />
           </motion.div>
 
           {/* Subtitle with reveal */}
