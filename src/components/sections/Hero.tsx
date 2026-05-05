@@ -90,36 +90,66 @@ export default function Hero() {
           {/* Animated Badge */}
           <motion.div 
             variants={fadeSlideUp} 
-            className="mb-10 group"
+            className="mb-12 group"
           >
-            <div className="relative px-6 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
+            <div className="relative px-8 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl shadow-purple-500/10">
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-rh-purple/10 to-transparent"
                 animate={{ x: ['-100%', '200%'] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span className="relative flex items-center gap-2 text-rh-purple text-[10px] font-mono uppercase tracking-[0.5em] font-bold">
-                <Sparkles size={12} className="animate-pulse" />
-                Sound Engineering Excellence
+              <span className="relative flex items-center gap-3 text-rh-purple text-[11px] font-mono uppercase tracking-[0.6em] font-black">
+                <Sparkles size={14} className="text-rh-cyan animate-pulse" />
+                The Future of Sound
               </span>
             </div>
           </motion.div>
 
-          {/* Title with staggered characters or just clean reveal */}
-          <motion.div variants={fadeSlideUp} className="relative mb-10">
+          {/* Main Title - Extreme Impact */}
+          <motion.div 
+            className="relative mb-12 select-none"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.05 } }
+            }}
+          >
             <h1
-              className="font-syne font-extrabold text-center leading-[0.85] tracking-tighter"
-              style={{ fontSize: 'clamp(4rem, 15vw, 12rem)' }}
+              className="font-syne font-extrabold text-center leading-[0.8] tracking-[-0.05em] uppercase"
+              style={{ fontSize: 'clamp(5rem, 20vw, 15rem)' }}
             >
-              <span className="text-rh-white block mix-blend-difference">RH</span>
-              <span className="text-gradient-neon block">RECORDS</span>
+              <div className="overflow-hidden mb-2">
+                <motion.span 
+                  className="text-rh-white block"
+                  variants={{
+                    hidden: { y: "100%" },
+                    visible: { y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                >
+                  RH
+                </motion.span>
+              </div>
+              <div className="overflow-hidden">
+                <motion.span 
+                  className="text-gradient-neon block pb-4"
+                  variants={{
+                    hidden: { y: "100%" },
+                    visible: { y: 0, transition: { duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                >
+                  RECORDS
+                </motion.span>
+              </div>
             </h1>
             
-            {/* Subtle floating elements around title */}
+            {/* Dynamic Background Glow */}
             <motion.div 
-              animate={{ y: [0, -10, 0], opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="absolute -top-10 -right-10 w-20 h-20 bg-rh-cyan/20 blur-3xl rounded-full"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 8, repeat: Infinity }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-rh-purple/20 blur-[150px] -z-10 rounded-full"
             />
           </motion.div>
 
