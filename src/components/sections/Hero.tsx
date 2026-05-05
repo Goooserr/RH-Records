@@ -5,15 +5,13 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, Variants, useMotionValue, useSpring } from 'framer-motion';
 import { Play, Calendar, Music, Sparkles } from 'lucide-react';
 import SoundWaveAnim from '@/components/ui/SoundWaveAnim';
-import TextScramble from '@/components/ui/TextScramble';
 import dynamic from 'next/dynamic';
 
 const Vinyl3D = dynamic(() => import('@/components/ui/Vinyl3D'), { 
   ssr: false,
-  loading: () => <div className="w-full h-[500px] bg-transparent" /> 
+  loading: () => <div className="w-full h-full bg-transparent" /> 
 });
 
-const AnimatedLogo = dynamic(() => import('@/components/ui/AnimatedLogo'), { ssr: false });
 import LiquidButton from '@/components/ui/LiquidButton';
 
 const containerVariants: Variants = {
@@ -115,64 +113,59 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Title + 3D Object */}
-          <div className="relative w-full flex flex-col items-center mb-12">
-            {/* The Primary Title - Centered */}
+          {/* Immersive Background Vinyl (Behind Title) */}
+          <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-60 lg:opacity-80">
             <motion.div 
-              className="relative select-none group z-20 flex flex-col items-center"
-              initial={{ opacity: 0, y: 20 }}
+              className="w-full h-full scale-125 lg:scale-150"
+              style={{ 
+                rotateX: useTransform(scrollYProgress, [0, 1], [0, 20]),
+                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -200]), { stiffness: 50, damping: 20 })
+              }}
+            >
+              <Vinyl3D />
+            </motion.div>
+          </div>
+
+          {/* Main Title Group */}
+          <div className="relative w-full flex flex-col items-center mb-24 z-10">
+            <motion.div 
+              className="relative select-none flex flex-col items-center"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="flex flex-col items-center">
                 <div className="relative flex flex-col items-center">
-                  {/* Background Shadow Text for Depth */}
-                  <span className="absolute -top-12 left-1/2 -translate-x-1/2 text-[12px] font-mono text-rh-purple/40 tracking-[1em] uppercase blur-[1px] animate-pulse whitespace-nowrap">
-                    System.Initialized
-                  </span>
-
-                  {/* Animated Logo (Neon Effect) */}
-                  <div className="mb-4">
-                    <AnimatedLogo />
-                  </div>
-
-                  {/* The Primary Title */}
-                  <h1 
-                    className="font-syne font-light text-center leading-[1.1] tracking-[0.25em] uppercase flex flex-col items-center"
-                    style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)' }}
+                  {/* Decorative tag */}
+                  <motion.span 
+                    className="mb-8 px-4 py-1.5 rounded-full border border-rh-purple/30 bg-rh-purple/10 text-[11px] font-mono text-rh-purple tracking-[0.4em] uppercase backdrop-blur-md"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5, duration: 1 }}
                   >
-                    <div className="relative mt-2">
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-rh-purple via-rh-cyan to-rh-pink animate-gradient-x font-bold tracking-[0.1em]">
-                        <TextScramble text="RH RECORDS" />
+                    High-End Production
+                  </motion.span>
+
+                  {/* The Primary Title - More Solid & Premium */}
+                  <h1 
+                    className="font-syne font-black text-center leading-[0.9] tracking-[-0.04em] uppercase flex flex-col items-center text-rh-white"
+                    style={{ fontSize: 'clamp(3.5rem, 15vw, 10rem)' }}
+                  >
+                    <div className="relative">
+                      <span className="inline-block mix-blend-difference drop-shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                        RH RECORDS
                       </span>
                       
-                      {/* Futuristic Underline Decoration */}
+                      {/* Gradient Accent Line */}
                       <motion.div 
-                        className="absolute -bottom-4 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-rh-purple/50 to-transparent"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ delay: 1.5, duration: 2 }}
+                        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-neon"
+                        initial={{ width: 0 }}
+                        animate={{ width: 128 }}
+                        transition={{ delay: 1, duration: 1.5 }}
                       />
                     </div>
                   </h1>
                 </div>
-              </div>
-            </motion.div>
-
-            {/* 3D Object - Smaller and on the side on Desktop, below on mobile */}
-            <motion.div 
-              className="lg:absolute lg:-right-4 lg:top-1/2 lg:-translate-y-1/2 w-full max-w-[250px] lg:max-w-[320px] opacity-40 lg:opacity-80 mix-blend-screen pointer-events-none lg:pointer-events-auto"
-              style={{ 
-                y: useSpring(useTransform(scrollYProgress, [0, 1], [0, -100]), { stiffness: 50, damping: 20 }),
-                rotate: useTransform(scrollYProgress, [0, 1], [0, 30]),
-                x: useSpring(useTransform(mouseX, [-500, 500], [10, -10]), { stiffness: 50, damping: 20 })
-              }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 0.8, scale: 1 }}
-              transition={{ duration: 1.5, delay: 0.8 }}
-            >
-              <div className="w-full aspect-square">
-                <Vinyl3D />
               </div>
             </motion.div>
           </div>

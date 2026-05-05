@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { 
   Float, 
@@ -9,114 +9,110 @@ import {
   MeshReflectorMaterial, 
   Text,
   Environment,
-  ContactShadows
+  ContactShadows,
+  MeshTransmissionMaterial
 } from '@react-three/drei';
 import * as THREE from 'three';
 
 function Vinyl() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const labelRef = useRef<THREE.Group>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
     if (!meshRef.current) return;
     const t = state.clock.getElapsedTime();
     
-    // Smooth rotation
-    meshRef.current.rotation.y += 0.015;
+    // Slow, cinematic rotation
+    meshRef.current.rotation.y += 0.005;
     
-    // Subtle tilt/float
-    meshRef.current.rotation.x = Math.sin(t * 0.5) * 0.1;
-    meshRef.current.position.y = Math.sin(t) * 0.1;
+    // Breathing effect
+    const scale = 1 + Math.sin(t * 0.5) * 0.02;
+    meshRef.current.scale.set(scale, scale, scale);
+
+    if (ringRef.current) {
+      ringRef.current.rotation.z -= 0.01;
+      ringRef.current.rotation.x = Math.sin(t * 0.3) * 0.1;
+    }
   });
 
   return (
-    <group rotation={[Math.PI / 6, 0, 0]}>
-      {/* Vinyl Disc with realistic reflections */}
+    <group rotation={[Math.PI / 8, -Math.PI / 6, 0]}>
+      {/* Main Vinyl Disc - Chrome / Glass Material */}
       <mesh ref={meshRef} receiveShadow castShadow>
-        <cylinderGeometry args={[2, 2, 0.04, 128]} />
-        <MeshReflectorMaterial
-          blur={[300, 100]}
-          resolution={1024}
-          mixBlur={1}
-          mixStrength={40}
-          roughness={1}
-          depthScale={1.2}
-          minDepthThreshold={0.4}
-          maxDepthThreshold={1.4}
-          color="#050505"
+        <cylinderGeometry args={[3, 3, 0.05, 128]} />
+        <MeshPhysicalMaterial
+          color="#111"
           metalness={0.9}
-          mirror={1}
+          roughness={0.1}
+          reflectivity={1}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+          emissive="#220033"
+          emissiveIntensity={0.5}
         />
         
-        {/* Grooves (Visual trick with concentric cylinders or just specular) */}
-        {[1.8, 1.6, 1.4, 1.2, 1.0].map((radius, i) => (
-          <mesh key={i} position={[0, 0.021, 0]}>
-            <ringGeometry args={[radius, radius + 0.005, 64]} />
-            <meshStandardMaterial color="#222" transparent opacity={0.3} />
+        {/* Subtle Grooves (using a ring with high-end material) */}
+        {[2.8, 2.5, 2.2, 1.9, 1.6, 1.3].map((radius, i) => (
+          <mesh key={i} position={[0, 0.026, 0]}>
+            <ringGeometry args={[radius, radius + 0.01, 128]} />
+            <meshStandardMaterial 
+              color="#A855F7" 
+              emissive="#A855F7" 
+              emissiveIntensity={0.5} 
+              transparent 
+              opacity={0.2} 
+            />
           </mesh>
         ))}
 
-        {/* Center Label */}
-        <group ref={labelRef} position={[0, 0.022, 0]}>
+        {/* Center Label - Neon Core */}
+        <group position={[0, 0.03, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <circleGeometry args={[0.7, 32]} />
-            <meshStandardMaterial 
-              color="#A855F7" 
-              emissive="#7C3AED" 
-              emissiveIntensity={1.5}
+            <circleGeometry args={[0.8, 64]} />
+            <MeshTransmissionMaterial
+              backside
+              samples={16}
+              resolution={512}
+              transmission={1}
+              roughness={0.2}
+              thickness={0.5}
+              ior={1.5}
+              chromaticAberration={0.5}
+              anisotropy={0.3}
+              distortion={0.5}
+              color="#A855F7"
             />
           </mesh>
-          <Text
-            position={[0, 0.01, 0]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            fontSize={0.12}
-            color="white"
-            anchorX="center"
-            anchorY="middle"
-          >
-            RH RECORDS
-          </Text>
         </group>
-
-        {/* Inner Hole */}
-        <mesh position={[0, 0.025, 0]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.01, 16]} />
-          <meshStandardMaterial color="#000" />
-        </mesh>
       </mesh>
 
-      {/* Spatial Glass Ring */}
-      <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[2.4, 0.01, 16, 100]} />
-          <meshStandardMaterial 
-            color="#06B6D4" 
-            emissive="#06B6D4" 
-            emissiveIntensity={3} 
-            transparent 
-            opacity={0.6}
-          />
-        </mesh>
-        
-        {/* Glow particles or secondary ring */}
-        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.1, 0]}>
-          <torusGeometry args={[2.45, 0.005, 16, 100]} />
-          <meshStandardMaterial 
-            color="#A855F7" 
-            emissive="#A855F7" 
-            emissiveIntensity={2} 
-            transparent 
-            opacity={0.3}
-          />
-        </mesh>
-      </Float>
+      {/* Floating Outer Glass Ring - Refractive */}
+      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[3.5, 0.02, 16, 100]} />
+        <MeshTransmissionMaterial
+          samples={16}
+          resolution={256}
+          transmission={1}
+          roughness={0}
+          thickness={1}
+          ior={1.2}
+          chromaticAberration={1}
+          color="#06B6D4"
+          emissive="#06B6D4"
+          emissiveIntensity={0.5}
+        />
+      </mesh>
 
-      {/* Decorative floating bits */}
-      {[...Array(3)].map((_, i) => (
-        <Float key={i} speed={1 + i} rotationIntensity={2} floatIntensity={1}>
-          <mesh position={[Math.cos(i * 2) * 3, Math.sin(i * 2) * 2, -1]}>
-            <octahedronGeometry args={[0.1]} />
-            <meshStandardMaterial color="#06B6D4" emissive="#06B6D4" emissiveIntensity={2} />
+      {/* Ambient particles */}
+      {[...Array(20)].map((_, i) => (
+        <Float key={i} speed={2} rotationIntensity={1} floatIntensity={1}>
+          <mesh position={[
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 5
+          ]}>
+            <sphereGeometry args={[0.02, 8, 8]} />
+            <meshStandardMaterial color="#A855F7" emissive="#A855F7" emissiveIntensity={2} />
           </mesh>
         </Float>
       ))}
@@ -126,41 +122,45 @@ function Vinyl() {
 
 export default function Vinyl3D() {
   return (
-    <div className="w-full h-full min-h-[400px] relative group cursor-grab active:cursor-grabbing">
-      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 2, 6], fov: 35 }}>
-        <PerspectiveCamera makeDefault position={[0, 2.5, 6]} />
+    <div className="w-full h-full relative group">
+      <Canvas 
+        shadows 
+        dpr={[1, 2]} 
+        camera={{ position: [0, 0, 8], fov: 40 }}
+        gl={{ antialias: true, alpha: true }}
+      >
+        <PerspectiveCamera makeDefault position={[0, 0, 8]} />
         <ambientLight intensity={0.2} />
         
-        {/* Dramatic Studio Lighting */}
-        <spotLight position={[5, 10, 5]} angle={0.15} penumbra={1} intensity={2} castShadow />
-        <pointLight position={[-5, 5, -5]} color="#EC4899" intensity={1.5} />
-        <pointLight position={[5, -5, 5]} color="#06B6D4" intensity={1.5} />
-        <pointLight position={[0, 5, 0]} color="#A855F7" intensity={2} />
+        {/* Cinematic Lighting */}
+        <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2} castShadow color="#A855F7" />
+        <spotLight position={[-10, 15, -10]} angle={0.3} penumbra={1} intensity={1} color="#06B6D4" />
+        <pointLight position={[0, 0, 5]} color="#A855F7" intensity={0.5} />
         
         <Environment preset="night" />
         
         <Vinyl />
         
         <ContactShadows 
-          position={[0, -2, 0]} 
+          position={[0, -4, 0]} 
           opacity={0.4} 
-          scale={10} 
-          blur={2.5} 
-          far={4} 
+          scale={20} 
+          blur={3} 
+          far={10} 
           color="#000000" 
         />
         
         <OrbitControls 
           enableZoom={false} 
-          enablePan={false} 
+          enablePan={false}
           autoRotate={false}
-          maxPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 1.5}
           minPolarAngle={Math.PI / 3}
         />
       </Canvas>
       
-      {/* Background glow that reacts to hover? (Optional CSS) */}
-      <div className="absolute inset-0 bg-radial-gradient from-rh-purple/5 to-transparent pointer-events-none group-hover:from-rh-purple/10 transition-colors duration-1000" />
+      {/* Soft vignette overlay */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-rh-black/20 to-rh-black pointer-events-none" />
     </div>
   );
 }
