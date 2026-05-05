@@ -116,7 +116,7 @@ export default function Hero() {
           >
             <h1
               className="font-syne font-extrabold text-center leading-[0.8] tracking-[-0.05em] uppercase"
-              style={{ fontSize: 'clamp(5rem, 20vw, 15rem)' }}
+              style={{ fontSize: 'clamp(3.5rem, 15vw, 10rem)' }}
             >
               <div className="overflow-hidden mb-2">
                 <motion.span 
