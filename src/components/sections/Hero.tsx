@@ -195,27 +195,63 @@ export default function Hero() {
         {/* Improved Floating Visualizer Card */}
         <motion.div 
           variants={fadeIn}
-          className="max-w-md mx-auto"
+          className="max-w-xl mx-auto w-full px-4"
+          style={{ 
+            opacity: useTransform(scrollYProgress, [0, 0.8], [1, 0]),
+            y: useTransform(scrollYProgress, [0, 1], [0, -50])
+          }}
+          animate={{ 
+            y: [0, -15, 0],
+          }}
+          transition={{ 
+            y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+            opacity: { duration: 0.8 }
+          }}
         >
-          <div className="relative p-1 rounded-[32px] bg-gradient-to-br from-white/10 via-transparent to-white/5 overflow-hidden">
-             <div className="p-8 rounded-[28px] bg-rh-black/40 backdrop-blur-xl">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-rh-purple/20 flex items-center justify-center">
-                    <Music size={18} className="text-rh-purple" />
+          <motion.div 
+            whileHover={{ scale: 1.02, rotateY: 5, rotateX: -5 }}
+            className="relative p-[2px] rounded-[32px] bg-gradient-to-br from-rh-purple/40 via-transparent to-rh-cyan/40 overflow-hidden group cursor-pointer shadow-2xl shadow-purple-500/20"
+          >
+             <div className="p-10 rounded-[30px] bg-rh-black/60 backdrop-blur-2xl border border-white/5 relative overflow-hidden">
+              {/* Internal Glow Pulse */}
+              <motion.div 
+                animate={{ opacity: [0.1, 0.3, 0.1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute inset-0 bg-rh-purple/5 pointer-events-none"
+              />
+
+              <div className="flex items-center justify-between mb-8 relative z-10">
+                <div className="flex items-center gap-6">
+                  <div className="w-14 h-14 rounded-2xl bg-rh-purple/10 flex items-center justify-center border border-rh-purple/20">
+                    <Music size={24} className="text-rh-purple animate-pulse" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-mono text-rh-grey uppercase tracking-widest">Studio Engine</span>
-                    <span className="text-xs font-bold text-rh-white">Processing Live Audio...</span>
+                    <span className="text-[11px] font-mono text-rh-purple uppercase tracking-[0.3em] font-bold">Studio Engine v2.0</span>
+                    <span className="text-sm font-bold text-rh-white tracking-wide">Processing Real-time Audio Stream</span>
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  {[1,2,3].map(i => <div key={i} className="w-1 h-1 rounded-full bg-rh-purple/40" />)}
+                <div className="flex gap-2">
+                  {[1,2,3,4].map(i => (
+                    <motion.div 
+                      key={i} 
+                      animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 1, delay: i * 0.2, repeat: Infinity }}
+                      className="w-1.5 h-1.5 rounded-full bg-rh-cyan" 
+                    />
+                  ))}
                 </div>
               </div>
-              <SoundWaveAnim bars={40} color="purple" />
+              <div className="relative z-10 py-4">
+                <SoundWaveAnim bars={60} color="purple" />
+              </div>
+
+              {/* Bottom Info Bar */}
+              <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-rh-grey/50 uppercase tracking-widest relative z-10">
+                <span>Latency: 1.2ms</span>
+                <span>Bitrate: 24-bit / 96kHz</span>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
 
