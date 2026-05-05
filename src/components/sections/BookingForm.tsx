@@ -43,7 +43,7 @@ const initialForm: FormData = {
 
 function InputField({
   label, icon: Icon, id, error, ...props
-}: { label: string; icon: React.ElementType; id: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+}: { label: string; icon: any; id: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="text-rh-grey text-sm font-medium flex items-center gap-1.5">
