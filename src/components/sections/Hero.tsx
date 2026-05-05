@@ -6,6 +6,12 @@ import { motion, useScroll, useTransform, Variants, useMotionValue, useSpring } 
 import { Play, Calendar, Music, Sparkles } from 'lucide-react';
 import SoundWaveAnim from '@/components/ui/SoundWaveAnim';
 import TextScramble from '@/components/ui/TextScramble';
+import dynamic from 'next/dynamic';
+
+const Vinyl3D = dynamic(() => import('@/components/ui/Vinyl3D'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-[500px] bg-transparent" /> 
+});
 
 const containerVariants: Variants = {
   hidden: {},
@@ -66,6 +72,20 @@ export default function Hero() {
       className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden"
       aria-label="Accueil RH Records"
     >
+      {/* 3D Spatial Element */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          className="absolute top-1/2 -right-20 lg:right-[5%] -translate-y-1/2 w-full max-w-[500px] opacity-40 lg:opacity-60"
+          style={{ 
+            y: useTransform(scrollYProgress, [0, 1], [0, -150]),
+            rotate: useTransform(scrollYProgress, [0, 1], [0, 25]),
+            x: useSpring(useTransform(mouseX, [-500, 500], [30, -30]), { stiffness: 50, damping: 20 })
+          }}
+        >
+          <Vinyl3D />
+        </motion.div>
+      </div>
+
       {/* Spotlight Effect */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none opacity-40"
